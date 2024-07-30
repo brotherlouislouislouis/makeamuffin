@@ -230,6 +230,36 @@ let isResizing = false;
 let isRotating = false;
 let offsetX, offsetY, startX, startY, startWidth, startHeight, startRotation;
 
+// Add touch events for mobile support
+canvas.addEventListener('touchstart', (event) => {
+    const touch = event.touches[0];
+    const mouseEvent = new MouseEvent('mousedown', {
+        clientX: touch.clientX,
+        clientY: touch.clientY
+    });
+    canvas.dispatchEvent(mouseEvent);
+}, false);
+
+canvas.addEventListener('touchmove', (event) => {
+    const touch = event.touches[0];
+    const mouseEvent = new MouseEvent('mousemove', {
+        clientX: touch.clientX,
+        clientY: touch.clientY
+    });
+    canvas.dispatchEvent(mouseEvent);
+}, false);
+
+canvas.addEventListener('touchend', () => {
+    const mouseEvent = new MouseEvent('mouseup', {});
+    canvas.dispatchEvent(mouseEvent);
+}, false);
+
+canvas.addEventListener('touchcancel', () => {
+    const mouseEvent = new MouseEvent('mouseup', {});
+    canvas.dispatchEvent(mouseEvent);
+}, false);
+
+
 canvas.addEventListener('mousedown', (event) => {
     const { offsetX: mouseX, offsetY: mouseY } = event;
     if (state.custom) {
