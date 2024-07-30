@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$MUFF</title>
+    <link rel="icon" href="layers/muff og.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="https://twitter.com">Twitter</a>
+            <a href="https://telegram.org">Telegram</a>
+            <a href="https://dexscreener.com">Dexscreener</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Build a Muff</h1>
+        <div id="muffContainer">
+            <canvas id="memeCanvas" width="500" height="500"></canvas>
+            <div id="buttonContainer">
+                <button id="generate">Generate Random</button>
+                <button id="download">Download</button>
+                <input type="file" id="uploadLayer">
+                <button id="uploadButton">Upload Layer</button>
+            </div>
+        </div>
+        <div id="controls">
+            <div id="layers">
+                <!-- Muff Selection -->
+                <label for="muffOptions">Muff:</label>
+                <div id="muffOptions" class="layer-options"></div>
+                <!-- Clothing Selection -->
+                <label for="clothOptions">Cloth:</label>
+                <div id="clothOptions" class="layer-options"></div>
+                <!-- Accessories Selection -->
+                <label for="accOptions">Accessories:</label>
+                <div id="accOptions" class="layer-options"></div>
+                <!-- Background Selection -->
+                <label for="bkgOptions">Background:</label>
+                <div id="bkgOptions" class="layer-options"></div>
+                <!-- Headgear Selection -->
+                <label for="headOptions">Head:</label>
+                <div id="headOptions" class="layer-options"></div>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
+    
