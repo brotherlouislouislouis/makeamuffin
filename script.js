@@ -58,8 +58,8 @@ function loadImage(src) {
     });
 }
 
-async function drawMuff() {
-    // Ensure we only clear the canvas when necessary
+async function drawMuff(isForDownload = false) {
+    // Clear the canvas for a fresh draw
     if (state.custom && state.custom.dirty) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         state.custom.dirty = false;
@@ -85,15 +85,15 @@ async function drawMuff() {
             ctx.translate(-state.custom.width / 2, -state.custom.height / 2);
             ctx.drawImage(state.custom.img, 0, 0, state.custom.width, state.custom.height);
             ctx.restore();
-            drawResizeHandles();
+            
+            if (!isForDownload) {
+                drawResizeHandles();
+            }
         }
     } catch (err) {
         console.error('Error drawing the Muff:', err);
     }
 }
-
-
-
 
 function drawResizeHandles() {
     if (!state.custom) return;
@@ -128,7 +128,7 @@ function createLayerOptions(layerName, layerOptions) {
     layerOptions.forEach(option => {
         const div = document.createElement('div');
         div.classList.add('layer-option');
-        div.dataset.option = option; // Store the option in a data attribute
+        div.dataset.option = option;
         div.addEventListener('click', () => {
             state[layerName] = option;
             drawMuff();
@@ -170,11 +170,28 @@ function randomizeSelections() {
 }
 
 function downloadImage() {
-    const link = document.createElement('a');
-    link.download = 'muff.png';
-    link.href = canvas.toDataURL();
-    link.click();
+    // Draw the canvas without visual cues
+    drawMuff(true).then(() => {
+        // Create a temporary canvas to hold the image content
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = canvas.width;
+        tempCanvas.height = canvas.height;
+        const tempCtx = tempCanvas.getContext('2d');
+
+        // Draw the current content of the canvas to the temporary canvas
+        tempCtx.drawImage(canvas, 0, 0);
+
+        // Prepare and trigger download
+        const link = document.createElement('a');
+        link.download = 'muff.png';
+        link.href = tempCanvas.toDataURL();
+        link.click();
+
+        // Restore the original canvas state with visual cues
+        drawMuff();
+    });
 }
+
 
 function uploadLayer() {
     const fileInput = document.getElementById('uploadLayer');
@@ -192,7 +209,7 @@ function uploadLayer() {
                 width: img.width,
                 height: img.height,
                 rotation: 0,
-                dirty: true // Mark the image as dirty for redrawing
+                dirty: true
             };
             drawMuff();
         };
